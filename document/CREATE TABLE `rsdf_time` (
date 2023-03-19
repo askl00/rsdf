@@ -1,0 +1,161 @@
+CREATE TABLE `rsdf_time` (
+  `id` bigint(20) unsigned NOT NULL,
+  `time_start` datetime not NULL COMMENT '开始时间',
+  `time_end` datetime not NULL COMMENT '结束时间，为空时为时间点',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='时间';
+
+CREATE TABLE `rsdf_event` (
+  `id` bigint(20) unsigned NOT NULL,
+  `time_id` datetime not NULL COMMENT '时间id',
+  `name` varchar(10) not NULL COMMENT '名称',
+  `parent_id` bigint(20) not NULL COMMENT '父级事件',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='事件';
+
+CREATE TABLE `rsdf_event_option` (
+  `id` bigint(20) unsigned NOT NULL,
+  `event_id` bigint(20) not NULL COMMENT '选项id',
+  `name` varchar(100) not NULL COMMENT '名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='事件选项';
+
+CREATE TABLE `rsdf_event_option_property` (
+  `id` bigint(20) unsigned NOT NULL,
+  `option_id` bigint(20) not NULL COMMENT '目标id',
+  `property_id` bigint(20) not NULL COMMENT '属性id',
+  `min_value` int(3) not NULL COMMENT '变动最小值',
+  `max_value` int(3) not NULL COMMENT '变动最大值',
+  `change_type` tinyint(1) not NULL COMMENT '0=加减 1=百分比',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='事件-属性变动表';
+
+CREATE TABLE `rsdf_event_probability` (
+  `id` bigint(20) unsigned NOT NULL,
+  `event_id` bigint(20) not NULL COMMENT '事件id',
+  `probability` int(3) not NULL COMMENT '概率',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='事件概率表';
+
+CREATE TABLE `rsdf_target` (
+  `id` bigint(20) unsigned NOT NULL,
+  `name` varchar(10) not NULL COMMENT '名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='目标表';
+
+CREATE TABLE `rsdf_target_property` (
+  `id` bigint(20) unsigned NOT NULL,
+  `target_id` bigint(20) not NULL COMMENT '目标id',
+  `property_id` bigint(20) not NULL COMMENT '属性id',
+  `property_value` int(3) not NULL COMMENT '属性值',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='目标-所需属性表';
+
+CREATE TABLE `rsdf_event_target_probability` (
+  `id` bigint(20) unsigned NOT NULL,
+  `event_id` bigint(20) not NULL COMMENT '事件id',
+  `target_id` bigint(20) not NULL COMMENT '目标id',
+  `probability` int(3) not NULL COMMENT '概率',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='事件-目标概率表';
+
+CREATE TABLE `rsdf_event_probability_property` (
+  `id` int(20) unsigned NOT NULL,
+  `event_id` bigint(20) not NULL COMMENT '事件id',
+  `property_id` bigint(20) not NULL COMMENT '属性id',
+  `min_value` int(3) not NULL COMMENT '最小值',
+  `max_value` int(3) default NULL COMMENT '最大值',
+  `ratio` int(3) DEFAULT not NULL COMMENT '系数',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='事件-属性概率表';
+
+CREATE TABLE `rsdf_user_property` (
+  `id` int(20) unsigned NOT NULL,
+  `user_id` bigint(20) not NULL COMMENT '用户id',
+  `property_id` bigint(20) not NULL COMMENT '属性id',
+  `value` int(3) DEFAULT not NULL COMMENT '属性值',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='人物属性表';
+
+CREATE TABLE `rsdf_property` (
+  `id` int(20) unsigned NOT NULL,
+  `name` varchar(10) not NULL COMMENT '名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='属性表';
+
+
+CREATE TABLE `rsdf_entry` (
+  `id` int(20) unsigned NOT NULL,
+  `name` varchar(10) not NULL COMMENT '名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='词条表';
+
+
+CREATE TABLE `rsdf_entry_property` (
+  `id` int(20) unsigned NOT NULL,
+  `entry_id` int(20) DEFAULT not NULL COMMENT '词条id',
+  `property_id` int(20) DEFAULT not NULL COMMENT '属性id',
+  `property` int(3) not NULL COMMENT '概率',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='词条属性表';
+
+
+CREATE TABLE `rsdf_event_property_reward` (
+  `id` int(20) unsigned NOT NULL,
+  `entry_property_id` int(20) DEFAULT not NULL COMMENT '词条属性id',
+  `property_id` int(20) DEFAULT not NULL COMMENT '属性id',
+  `value` int(3) DEFAULT not NULL COMMENT '属性值',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='事件改变属性（奖励）表';
+
+
+CREATE TABLE `rsdf_game` (
+  `id` int(20) unsigned NOT NULL,
+  `user_id` bigint(20) not NULL COMMENT '用户id',
+  `distinct_id` varchar(100) not NULL COMMENT '游戏唯一标识',
+  `game_date` date not NULL COMMENT '开始时间',
+  `time_start` datetime not NULL COMMENT '开始时间',
+  `time_end` datetime default NULL COMMENT '结束时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='游戏（记录）表';
+
+CREATE TABLE `rsdf_game_event` (
+  `id` int(20) unsigned NOT NULL,
+  `game_id` bigint(20) not NULL COMMENT '游戏id',
+  `event_id` datetime not NULL COMMENT '开始时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='游戏发生的事件表';
+
+
+CREATE TABLE `rsdf_game_property` (
+  `id` int(20) unsigned NOT NULL,
+  `game_id` bigint(20) not NULL COMMENT '游戏id',
+  `property_id` bigint(20) not NULL COMMENT '游戏id',
+  `value` int(3) not NULL COMMENT '属性值',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='游戏人物属性表';
+
+CREATE TABLE `rsdf_game_property_record` (
+  `id` int(20) unsigned NOT NULL,
+  `game_property_id` bigint(20) not NULL COMMENT '游戏属性id',
+  `time_id` bigint(20) default NULL COMMENT '时间id',
+  `value` int(3) default NULL COMMENT '属性值',
+  `source` int(3) not NULL COMMENT '来源',
+  `source_id` int(20) not NULL COMMENT '来源id',
+  `created_time` datetime not NULL COMMENT '发生时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='属性变动记录表';
+
+CREATE TABLE `rsdf_game_target` (
+  `id` int(20) unsigned NOT NULL,
+  `game_id` bigint(20) not NULL COMMENT '游戏id',
+  `target_id` bigint(20) not NULL COMMENT '目标id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='游戏目标表';
+
+CREATE TABLE `rsdf_game_entry` (
+  `id` int(20) unsigned NOT NULL,
+  `game_id` bigint(20) not NULL COMMENT '游戏id',
+  `entry_id` bigint(20) not NULL COMMENT '目标id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='游戏词条表';

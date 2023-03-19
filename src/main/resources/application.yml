@@ -1,0 +1,147 @@
+server:
+  port: 8096 #指定启动端口
+spring:
+  application:
+    name: cheers-app-local
+  main:
+    allow-bean-definition-overriding: true
+  datasource: #数据库配置
+    url: jdbc:mysql://wan-cheers-database.mysql.rds.aliyuncs.com:3306/cheers_test?zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: cheers_pub
+    password: NJ&01hVHv%y3
+#    url: jdbc:mysql://47.94.46.190:3306/cheers?zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: Woshidahaoren@888
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 数据源类型：Druid
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 配置Druid的其他参数，以下配置必须增加一个配置文件才能有效
+    # 初始化大小，最小，最大
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    # 获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat, wall
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    maxPoolPreparedStatementPerConnectionSize: 20
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+    # 合并多个DruidDataSource的监控数据
+    useGlobalDataSourceStat: true
+  redis:
+    host: 101.201.189.33
+    #    host: 47.95.36.4
+    port: 6379
+    password: X&&8!07Pd3SL
+    database: 1
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+      cluster-nodes: 47.95.254.238:9500
+      cluster-name: elasticsearch
+  elasticsearch:
+    rest:
+      uris: ["http://47.95.254.238:9500"]
+
+eureka:
+  # 实例的id  默认是myhost:myappname:port  可以配置更改
+  #  instance:
+  #    instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+  client:
+    # 开启健康检测
+    healthcheck: true
+    serviceUrl:
+      defaultZone: http://discover-01.cheerspublishing.com:8761/eureka/ #,http://discover-02.cheerspublishing.com:8762/eureka/
+  #更改Eureka更新频率将打破服务器的自我保护功能，生产环境下不建议自定义这些配置。
+  instance:
+    #续约到期时间（默认90秒）
+    lease-expiration-duration-in-seconds: 30
+    #续约更新时间间隔（默认30秒）
+    lease-renewal-interval-in-seconds: 10
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+
+
+logback:
+  destination:
+    url: logstash-01.cheerspublishing.com
+    port: 4560
+
+service:
+  config:
+    debug: true
+    uploadEnv: dev
+    tokenExpiredTime: 1000
+    env: production #测试=dev，正式 production
+    h5ShareHost: https://h5.api.app.cheerspublishing.com  # 分享h5地址域名:  开发192.168.1.250:8090，测试192.168.1.250:8091，远程http://123.57.3.20:8889（http://test.micro.api.cheerspublishing.com）
+    serviceHost: https://m.api.app.cheerspublishing.com  # 本服务访问地址域名:  本地http://localhost:8090    远程http://123.57.3.20:8090
+    reviewVersion: 3.1.0
+    scDataPath: /data/logs/sc/access.log
+    zclSerialId:  1448  # 珍藏历对应的专辑id
+    hyjxSerialId:  1499  # 韩焱精选对应的专辑id
+    h5FrontShortUrl: http://test.h5.lukehui.cn:18091  # 短链前段服务域名
+feign:
+  hystrix:
+    enabled: false
+  compression:
+    request:
+      enabled: true
+      mime-types: ["text/xml", "application/xml", "application/json"]
+      min-request-size: 512
+    response:
+      enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 6000
+        loggerLevel: basic
+      # 为具体的服务提供者的spring.application.name的值，表示单独为这个工程配置
+      search-service:
+        loggerLevel: full
+  okhttp:
+    enabled: true
+  httpclient:
+    max-connections: 1000
+    max-connections-per-route: 200
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+# MyBatis
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    cheers.app: debug
+    org.springframework: warn
+
+#小程序直播配置
+applets:
+  live:
+    appUserName: gh_756dd3d0fbf4 #小程序直播原始id
+
+order:
+  config:
+    detailTips: #2021年7月8日前的纸质书订单可以在湛庐APP中查询（相关订单预览、订单列表返回）
+    previewTips: #湛庐阅读APP中的账号余额，9月1日就可以同步到湛庐图书小程序了，您也可以去湛庐阅读App使用余额下单，给您造成的不便深感抱歉。（相关订单预览、订单列表返回）

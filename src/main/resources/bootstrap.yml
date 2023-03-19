@@ -1,0 +1,63 @@
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discover-01.cheerspublishing.com:8761/eureka/,http://discover-02.cheerspublishing.com:8762/eureka/
+---
+spring:
+  profiles: dev
+  cloud:
+    config:
+      profile: dev
+      name: app-service #远程应用的属性名称
+      discovery:
+        service-id: cheers-config #config服务名
+        enabled: true # 启用配置服务器发现
+      fail-fast: true #快速失败，如果有些时候服务连接不上配置服务器，希望这个服务快速失败，那么可以将fail-fast这个参数设置成true
+
+---
+
+spring:
+  profiles: production
+  cloud:
+    config:
+      profile: production
+      name: app-service #远程应用的属性名称
+      discovery:
+        service-id: cheers-config #config服务名
+        enabled: true # 启用配置服务器发现
+      fail-fast: true #快速失败，如果有些时候服务连接不上配置服务器，希望这个服务快速失败，那么可以将fail-fast这个参数设置成true
+#*
+---
+spring:
+  profiles: pre
+  cloud:
+    config:
+      profile: pre
+      name: app-service #远程应用的属性名称
+      discovery:
+        service-id: cheers-config #config服务名
+        enabled: true # 启用配置服务器发现
+      fail-fast: true #快速失败，如果有些时候服务连接不上配置服务器，希望这个服务快速失败，那么可以将fail-fast这个参数设置成true
+---
+spring:
+  profiles: test
+  cloud:
+    config:
+      profile: test
+      name: app-service #远程应用的属性名称
+      discovery:
+        service-id: cheers-config #config服务名
+        enabled: true # 启用配置服务器发现
+      fail-fast: true #快速失败，如果有些时候服务连接不上配置服务器，希望这个服务快速失败，那么可以将fail-fast这个参数设置成true
+---
+spring:
+  profiles: uat
+  cloud:
+    config:
+      profile: uat
+      name: app-service #远程应用的属性名称
+      discovery:
+        service-id: cheers-config #config服务名
+        enabled: true # 启用配置服务器发现
+      fail-fast: true #快速失败，如果有些时候服务连接不上配置服务器，希望这个服务快速失败，那么可以将fail-fast这个参数设置成true

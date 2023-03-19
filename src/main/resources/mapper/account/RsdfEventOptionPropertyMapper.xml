@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lmy.rsck.mapper.RsdfEventOptionPropertyMapper">
+    <resultMap id="BaseResultMap" type="com.lmy.rsck.model.example.RsdfEventOptionProperty">
+        <id column="id" property="id" />
+        <result column="option_id" property="optionId" />
+        <result column="property_id" property="propertyId" />
+        <result column="min_value" property="minValue" />
+        <result column="max_value" property="maxValue" />
+        <result column="change_type" property="changeType" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, option_id, property_id, min_value, max_value, change_type     
+    </sql>
+</mapper>

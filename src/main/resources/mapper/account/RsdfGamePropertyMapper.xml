@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lmy.rsck.mapper.RsdfGamePropertyMapper">
+    <resultMap id="BaseResultMap" type="com.lmy.rsck.model.example.RsdfGameProperty">
+        <id column="id" property="id" />
+        <result column="game_id" property="gameId" />
+        <result column="property_id" property="propertyId" />
+        <result column="value" property="value" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, game_id, property_id, value     
+    </sql>
+</mapper>

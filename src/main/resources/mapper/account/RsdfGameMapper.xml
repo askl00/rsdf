@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lmy.rsck.mapper.RsdfGameMapper">
+    <resultMap id="BaseResultMap" type="com.lmy.rsck.model.example.RsdfGame">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="distinct_id" property="distinctId" />
+        <result column="game_date" property="gameDate" />
+        <result column="time_start" property="timeStart" />
+        <result column="time_end" property="timeEnd" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, user_id, distinct_id, game_date, time_start, time_end     
+    </sql>
+</mapper>
